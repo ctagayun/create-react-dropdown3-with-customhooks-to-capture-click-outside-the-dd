@@ -1,0 +1,31 @@
+
+Source: https://www.robinwieruch.de/react-dropdown/
+https://getbootstrap.com/docs/4.0/components/buttons/
+Introduction:
+  - In this guide, you'll learn step by step how to build a dropdown in React. 
+  While HTML offers a built-in select element for similar functionality, 
+  React doesn't have such native primitives for dropdown components.
+
+  - npm install bootstrap
+   1. If created by create-vite
+      Once the installation is complete, we can include it in our app’s 
+       entry file in main.jsx :
+       //  Bootstrap CSS
+       import "bootstrap/dist/css/bootstrap.min.css";
+       // Bootstrap Bundle JS
+      import "bootstrap/dist/js/bootstrap.bundle.min";
+
+  2.  If React Project is created by create-react-app 
+      include it in our app’s entry file in index.js :
+
+  3. Next go to https://www.robinwieruch.de/react-dropdown/ 
+  and do the tutorial. See comments in the source code.
+
+  4. Next after completing the dropdown tutorial, go to 
+  React Hook: Detect Click outside of Component and do the tutorial 
+    https://www.robinwieruch.de/react-hook-detect-click-outside-component/
+  on how to close a dropdown if clicked outside of the component.
+
+    But before doing tutorial on Detecting Click outside of component,
+  do the tutorial also in React: Event Bubbling and Capturing
+  https://www.robinwieruch.de/react-event-bubbling-capturing/
