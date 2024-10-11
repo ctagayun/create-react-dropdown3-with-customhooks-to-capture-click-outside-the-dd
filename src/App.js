@@ -71,9 +71,17 @@ const App = () => {
 const Dropdown = ({ trigger, menu }) => {
   //Code to handle outside click
   const [count, setCount] = React.useState(0);
- // const handleClick = () => {
- //   setCount((state) => state + 1);
- // };
+
+  const handleClickOutside = () => {
+    setCount(0);
+ };
+
+  //Our custom hook can be used the following way in our React component:
+  //pass the event handler as callback function to the hook -- which executes 
+  //whenever the document gets clicked. In addition, use the reference by our
+  //custom hook (here: ref) and assign it to the li HTML element. 
+  //Pass handleClickOutside as callback handler.
+  const ref = useOutsideClick(handleClickOutside);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -91,7 +99,7 @@ const Dropdown = ({ trigger, menu }) => {
       {open ? (
         <ul className="menu">
           {menu.map((menuItem, index) => (
-            <li key={index} className="menu-item">
+            <li key={index} className="menu-item" ref={ref}>
                {/* replicate the menuitem in every iteration */}
                {React.cloneElement(menuItem, {
                 onClick: () => {
@@ -99,7 +107,9 @@ const Dropdown = ({ trigger, menu }) => {
                   //close the dropdown once a menu item in a native
                   //dropdown is clicked while still preserving its 
                   //implementation (here: menuItem.props.onClick).
-                  menuItem.props.onClick(); //closes the dropdown and preserve implementation
+                  menuItem.props.onClick(); //high-level API that allows us to close the dropdown once a 
+                                            //menu item in a dropdown is clicked while still preserving 
+                                            //its native implementation 
                   setOpen(false); //close the dropdwn
                   setCount((state) => state + 1);  //increments the state count. the number of times the list item was clicked
                 },
