@@ -2,14 +2,29 @@ import * as React from "react";
 import "./App.css";
 import useOutsideClick from "./hooks/useOutsideClick";
 
-const App = () => {
-  //Move this to the dropdown component
-  //const [open, setOpen] = React.useState(false);
+/* 
+  https://www.robinwieruch.de/react-hook-detect-click-outside-component
 
-   //Move this to the dropdown component
-  // const handleOpen = () => {
-  //   setOpen(!open);
-  // };
+  Continue Reading: Event Capturing and Bubbling in React -https://www.robinwieruch.de/react-event-bubbling-capturing/
+
+  This demo is a tutorial about how to detect a click outside of a React component 
+  by creating a custom React hook for it. For example, you may want such custom React hook 
+  FOR VARIOUS COMPONENTS like a dialog or dropdown, because they should close when a user 
+  clicks outside of them. So we need a way to find out about this outside click.
+
+  Objective: Next we want to reset the state (here: count) whenever a user
+     clicks outside of the button
+*/
+
+const style = {
+  padding: '10px',
+  border: '1px solid black',
+  display: 'flex',
+  justifyContent: 'center',
+};
+
+const App = () => {
+  const [count, setCount] = React.useState(0);
 
   const handleMenuOne = () => {
     console.log('clicked one');
@@ -21,12 +36,18 @@ const App = () => {
     //alert ('Clicked menu2');
   };
 
-  const style = {
-    padding: '10px',
-    border: '1px solid black',
-    display: 'flex',
-    justifyContent: 'center',
+  //This is the call back function passed to  useOutsideClick hook.
+  //This function will reset the state thereby closing the dropdown
+  const handleClickOutside = () => {
+    setCount(0);
   };
+
+  const handleClick = () => {
+    setCount((state) => state + 1);
+  };
+
+  //Now let use the custom hook called "useOutsideClick" from "./hooks/useOutsideClick";
+  const ref = useOutsideClick(handleClickOutside);
 
   return (
      <> 
@@ -39,8 +60,9 @@ const App = () => {
        
        <div style={style} >
         <Dropdown  
-          //populate the "trigger" prop
-          trigger={<button >Show Dropdown</button>}
+          //Now we will use the "ref" returned by "useOutsideClick" 
+          //be considered as an outside click.
+          trigger={<button ref={ref} onClick={handleClick} >Show Dropdown</button>}
          
           //populate the "menu" prop
           menu={[

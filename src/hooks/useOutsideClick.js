@@ -16,6 +16,7 @@ const useOutsideClick = (callback) => {
 
     console.log("Custom hook useOutsideClick fired");
     //custom hook initiates a React.useRef (tps://www.robinwieruch.de/react-ref/) 
+
     const ref = React.useRef(); 
     
     //What does useEffect do? by using this hook you tell React that 
@@ -32,11 +33,11 @@ const useOutsideClick = (callback) => {
     //
 
      //In our case, the side-effect function stores searchTerm into 
-       //the browser's local storage. The second argument is a dependency
-       //array of variables [searchTerm]. If one of these variables changes, 
-       //the function for the side-effect is called. In our case, 
-       //the function is called every time the searchTerm changes 
-       //(e.g. when a user types into the HTML input field).    
+     //the browser's local storage. The second argument is a dependency
+     //array of variables [searchTerm]. If one of these variables changes, 
+     //the function for the side-effect is called. In our case, 
+     //the function is called every time the searchTerm changes 
+     //(e.g. when a user types into the HTML input field).    
     //https://www.robinwieruch.de/react-useeffect-hook/
 
     //The purpose of useEffect Hook here is to assign (and remove)  
@@ -44,9 +45,19 @@ const useOutsideClick = (callback) => {
     //whenever the document gets clicked, the handler and the  
     //callback function you passed will run.
     React.useEffect(() => {
-      console.log(`useEffect fired. Displaying value of dependency array = `);
       const handleClick = (event) => {
-        callback();
+
+        //What we want to accomplish: Execute the callback function only when 
+        //anything outside of the passed ref (representing the button here) is clicked, 
+        //not when the ref itself (or its content) gets clicked:
+
+        //The reference assigned to 
+        //the button is the border between triggering the button's event handler and the 
+        //document's event handler. Everything clicked that's outside of the reference will 
+        //be considered as an outside click.
+        if (ref.current && !ref.current.contains(event.target)) {
+          callback();
+        }
       };
   
       document.addEventListener('click', handleClick);
@@ -54,7 +65,7 @@ const useOutsideClick = (callback) => {
       return () => {
         document.removeEventListener('click', handleClick);
       };
-    }, []);
+    }, [ref]);
   
     return ref;
   };
