@@ -24,7 +24,13 @@ const style = {
 };
 
 const App = () => {
+  //Initialize the state to zero
   const [count, setCount] = React.useState(0);
+
+  //event handler for the dropdown click event
+  const handleClick = () => {
+    setCount((state) => count + 1);
+  };
 
   const handleMenuOne = () => {
     console.log('clicked one');
@@ -42,11 +48,10 @@ const App = () => {
     setCount(0);
   };
 
-  const handleClick = () => {
-    setCount((state) => state + 1);
-  };
-
   //Now let use the custom hook called "useOutsideClick" from "./hooks/useOutsideClick";
+  // Now the custom hook can be used the following way in 
+ //our React component: pass the event handler as callback 
+ // function to the hook -- which executes whenever the document gets clicked.
   const ref = useOutsideClick(handleClickOutside);
 
   return (
@@ -62,7 +67,7 @@ const App = () => {
         <Dropdown  
           //Now we will use the "ref" returned by "useOutsideClick" 
           //be considered as an outside click.
-          trigger={<button ref={ref} onClick={handleClick} >Show Dropdown</button>}
+          trigger={<button ref={ref} onClick={handleClick} >MenuDropdown</button>}
          
           //populate the "menu" prop
           menu={[
@@ -91,48 +96,33 @@ const App = () => {
 //React's cloneElement API:
 
 const Dropdown = ({ trigger, menu }) => {
-  //Code to handle outside click
+  
   const [count, setCount] = React.useState(0);
-
-  const handleClickOutside = () => {
-    setCount(0);
- };
-
-  //Our custom hook can be used the following way in our React component:
-  //pass the event handler as callback function to the hook -- which executes 
-  //whenever the document gets clicked. In addition, use the reference by our
-  //custom hook (here: ref) and assign it to the li HTML element. 
-  //Pass handleClickOutside as callback handler.
-  const ref = useOutsideClick(handleClickOutside);
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
-
+ 
   return (
-     
     <div className="dropdown">
        {React.cloneElement(trigger, {  //trigger is what opens the dropdown
         onClick: handleOpen,
       })}   
      
-      {/* React's cloneElement API allows us to attach props to the passed trigger element (here: opening/closing the dropdown, because it toggles the open state within the dropdown component). */}
+      {/* React's cloneElement API allows us to attach props to the passed trigger 
+        element (here: opening/closing the dropdown, because it toggles the open 
+        state within the dropdown component). */}
       {open ? (
         <ul className="menu">
           {menu.map((menuItem, index) => (
-            <li key={index} className="menu-item" ref={ref}>
+            <li key={index} className="menu-item">
                {/* replicate the menuitem in every iteration */}
                {React.cloneElement(menuItem, {
                 onClick: () => {
-                  // Furthermore, the high-level API allows us to 
-                  //close the dropdown once a menu item in a native
-                  //dropdown is clicked while still preserving its 
-                  //implementation (here: menuItem.props.onClick).
                   menuItem.props.onClick(); //high-level API that allows us to close the dropdown once a 
                                             //menu item in a dropdown is clicked while still preserving 
-                                            //its native implementation 
-                  setOpen(false); //close the dropdwn
+                                            //its native implementation (here: menuItem.props.onClick). 
+                  setOpen(false);           //close the dropdwn
                   setCount((state) => state + 1);  //increments the state count. the number of times the list item was clicked
                 },
               })}
