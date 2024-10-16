@@ -25,23 +25,21 @@ const style = {
 };
 
 const App = () => {
-  //Initialize the state to zero
-  const [count, setCount] = React.useState(0);
+ // Initialize the state to zero
+ const [count, setCount] = React.useState(0);
 
-  //event handler for the dropdown click event
-  const handleClick = () => {
-    setCount((state) => count + 1);
-  };
-
+ 
   const handleMenuOne = () => {
     console.log('clicked one');
-    //alert ('Clicked menu1');
+    alert ('Clicked menu1');
   };
 
   const handleMenuTwo = () => {
     console.log('clicked two');
-    //alert ('Clicked menu2');
+    alert ('Clicked menu2');
   };
+
+  //Now let us use our custom hook
 
   //This is the call back function passed to  useOutsideClick hook.
   //This function will reset the state thereby closing the dropdown
@@ -49,12 +47,13 @@ const App = () => {
     setCount(0);
   };
 
-  //Now let use the custom hook called "useOutsideClick" from "./hooks/useOutsideClick";
-  // Now the custom hook can be used the following way in 
- //our React component: pass the event handler as callback 
- // function to the hook -- which executes whenever the document gets clicked.
+  //Now the custom hook can be used the following way: pass the event handler 
+  //as callback to the hook -- which executes whenever the document gets clicked.
+  //and returns "ref" whenever the document is clicked. Use the returned "ref"
+  //and assigned it to the "button" HTML element. (see trigger)
   const ref = useOutsideClick(handleClickOutside);
 
+ 
   return (
      <> 
       <div>
@@ -68,7 +67,7 @@ const App = () => {
         <Dropdown  
           //Now we will use the "ref" returned by "useOutsideClick" 
           //be considered as an outside click.
-          trigger={<button ref={ref} onClick={handleClick} >MenuDropdown</button>}
+          trigger={<button ref={ref}>MenuDropdown</button>}
          
           //populate the "menu" prop
           menu={[

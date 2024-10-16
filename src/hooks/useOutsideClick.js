@@ -15,26 +15,23 @@ const useOutsideClick = (callback) => {
 
     console.log("Custom hook useOutsideClick fired");
 
+    //The custom hook initiates a React ref which gets returned.
     //What is a userRef? The hook initiates a React.useRef (https://www.robinwieruch.de/react-ref/) 
     const ref = React.useRef(); 
+  
+    //What we want to accomplish: Execute the callback function only when 
+    //anything outside of the passed ref (representing the dropdown here) is clicked, 
+    //not when the ref itself (or its content) gets clicked:
 
-    //What does useEffect do? by using this hook you tell React that 
-    //your component needs to do something after a render.
+    //The reference assigned to 
+    //the button is the border between triggering the button's event handler and the 
+    //document's event handler. Everything clicked that's outside of the reference will 
+    //be considered as an outside click.
 
-    //In this scenario the purpose of useEffect Hook here is to assign (and remove)  
-    //an event listener(here: click event) on document level. After all, whenever the d
-    //document gets clicked, the handler and the callback function you passed will run.
+    //The custom hook uses React's useEffect Hook to assign (and remove) an event listener
     React.useEffect(() => {
       const handleClick = (event) => {
-
-        //What we want to accomplish: Execute the callback function only when 
-        //anything outside of the passed ref (representing the dropdown here) is clicked, 
-        //not when the ref itself (or its content) gets clicked:
-
-        //The reference assigned to 
-        //the button is the border between triggering the button's event handler and the 
-        //document's event handler. Everything clicked that's outside of the reference will 
-        //be considered as an outside click.
+        
         if (ref.current && !ref.current.contains(event.target)) {
           callback();
         }

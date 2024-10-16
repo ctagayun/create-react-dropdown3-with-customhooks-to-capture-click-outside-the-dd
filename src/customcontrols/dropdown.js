@@ -4,6 +4,7 @@ import * as React from "react";
 
 const Dropdown = ({ trigger, menu }) => {
   
+    console.log(`Trigger = ${trigger}`)
     const [count, setCount] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
